@@ -38,7 +38,22 @@ public class EmployeeServicesImpl implements IEmployeeServices {
     @Override
     public EmployeeEntity dtoToEntity(EmployeeDto employeeDto) {
         EmployeeEntity entity=modelMapper.map(employeeDto,EmployeeEntity.class);
-        return null;
+        return entity;
+    }
+
+
+    //SAVE ALL DATA
+    //http://locallhost:8080/save/all/employees
+    @Override
+    @PostMapping("/save/all/employees")
+    public List<EmployeeDto> saveAllDataEmployee() {
+        List<EmployeeDto> list = new ArrayList<>();
+        for (int i = 1; i <=10; i++) {
+            EmployeeEntity entity=    EmployeeEntity.builder(). employeeName("Adı "+i).employeeSurname("Soyadı "+i).build();
+            repository.save(entity);
+            list.add(entityToDto(entity));
+        }
+        return list;
     }
 
 
@@ -53,18 +68,19 @@ public class EmployeeServicesImpl implements IEmployeeServices {
     }
 
     //LIST
-    //http://locallhost:8080/list/employees
-    @Override
+    //http://localhost:8080/list/employees
     @GetMapping("/list/employees")
+    @Override
     public List<EmployeeDto> getAllEmployees() {
-        List<EmployeeEntity> listem=  repository.findAll();
-        List<EmployeeDto> dtoList=new ArrayList<>();
-        for( EmployeeEntity entity   :listem){
-            EmployeeDto dto=entityToDto(entity);
-            dtoList.add(dto);
+        List<EmployeeDto> list = new ArrayList<>();
+        Iterable<EmployeeEntity> listem = repository.findAll();
+        for (EmployeeEntity entity : listem) {
+            EmployeeDto adminDto = entityToDto(entity);
+            list.add(adminDto);
         }
-        return dtoList;
+        return list;
     }
+
 
     //FINDBYID
     //http://locallhost:8080/find/employees

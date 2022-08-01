@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/")
 //Dış dünyaya açılan kapı
 public class EmployeeImpl implements IEmployeeRest {
 
@@ -25,6 +25,14 @@ public class EmployeeImpl implements IEmployeeRest {
     @GetMapping({"/","index"})
     public String getRoot(){
         return "index";
+    }
+
+
+    // http://localhost:8080/api/v1/employees/alldata
+    @Override
+    @GetMapping("/employees/alldata")
+    public List<EmployeeDto> saveAllDataEmployee() {
+        return services.saveAllDataEmployee();
     }
 
     //CREATE
@@ -42,16 +50,15 @@ public class EmployeeImpl implements IEmployeeRest {
     @Override
     @GetMapping("/employees")
     public List<EmployeeDto> getAllEmployees() {
-        List<EmployeeDto> list=services.getAllEmployees();
-        return list;
+        services.getAllEmployees().forEach(System.out::println);
+        return services.getAllEmployees();
     }
 
     //FIND
-    // http://localhost:8080/api/v1/employees
     // http://localhost:8080/api/v1/employees/1
     @Override
-    @GetMapping({"/employees/{id}","/employees"})
-    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable(name="id",required = false)   Long id) {
+    @GetMapping("/employees/{id}")
+    public ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable(name="id")   Long id) {
         ResponseEntity<EmployeeDto> dto=services.getEmployeeById(id);
         return dto;
     }
@@ -60,8 +67,8 @@ public class EmployeeImpl implements IEmployeeRest {
     //DELETE
     // http://localhost:8080/api/v1/employees/1
     @Override
-    @DeleteMapping({"/employees/{id}","/employees"})
-    public ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable(name="id",required = false)  Long id) {
+    @DeleteMapping("/employees/{id}")
+    public ResponseEntity<Map<String, Boolean>> deleteEmployee(@PathVariable(name="id")  Long id) {
         services.deleteEmployee(id);
         Map<String,Boolean> response=new HashMap<>();
         response.put("SİLİNDİ",Boolean.TRUE);
@@ -71,8 +78,8 @@ public class EmployeeImpl implements IEmployeeRest {
     //UPDATE
     // http://localhost:8080/api/v1/employees/1
     @Override
-    @PutMapping ({"/employees/{id}","/employees"})
-    public ResponseEntity<EmployeeDto> updateEmployeeById(@PathVariable(name="id",required = false) Long id,  @RequestBody EmployeeDto employeeDto) {
+    @PutMapping ("/employees/{id}")
+    public ResponseEntity<EmployeeDto> updateEmployeeById(@PathVariable(name="id") Long id,  @RequestBody EmployeeDto employeeDto) {
         services.updateEmployee(id,employeeDto);
         return ResponseEntity.ok(employeeDto);
     }

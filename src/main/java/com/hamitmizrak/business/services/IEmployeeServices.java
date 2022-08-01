@@ -14,6 +14,9 @@ public interface IEmployeeServices {
     public EmployeeDto  entityToDto(EmployeeEntity employeeEntity);
     public EmployeeEntity dtoToEntity(EmployeeDto employeeDto);
 
+    //saveAllData
+    public  List<EmployeeDto>    saveAllDataEmployee();
+
     //save
     public EmployeeDto createEmployee(EmployeeDto employeeDto);
 

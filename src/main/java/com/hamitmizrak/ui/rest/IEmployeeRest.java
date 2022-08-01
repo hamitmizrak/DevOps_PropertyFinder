@@ -8,6 +8,9 @@ import java.util.Map;
 
 public interface IEmployeeRest {
 
+    //saveAllData
+    public  List<EmployeeDto>    saveAllDataEmployee();
+
     //SAVE
     EmployeeDto createEmployee(EmployeeDto employeeDto);
 

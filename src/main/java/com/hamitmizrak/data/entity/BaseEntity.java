@@ -24,7 +24,7 @@ import java.util.Date;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id",updatable = false)
-    private Long employeeId;
+    private Long id;
 
     //kim ekledi
     @CreatedBy
