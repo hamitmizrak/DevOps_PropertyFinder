@@ -4,8 +4,11 @@ import com.hamitmizrak.business.dto.EmployeeDto;
 import com.hamitmizrak.business.services.IEmployeeServices;
 import com.hamitmizrak.ui.rest.IEmployeeRest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,13 +23,16 @@ public class EmployeeImpl implements IEmployeeRest {
     @Autowired
     IEmployeeServices services;
 
-    // http://localhost:8080/api/v1
-    // http://localhost:8080/api/v1/index
-    @GetMapping({"/","index"})
-    public String getRoot(){
-        return "index";
-    }
 
+    // http://localhost:8080/api/v1/index
+    @GetMapping({"/","/index"})
+    public String getRoot() {
+        String URL="http://localhost:8080/root";
+        RestTemplate restTemplate=new RestTemplate();
+        ResponseEntity<String> responseEntity= restTemplate.exchange(URL, HttpMethod.GET, HttpEntity.EMPTY,String.class);
+        String productDto2=responseEntity.getBody();
+        return productDto2;
+    }
 
     // http://localhost:8080/api/v1/employees/alldata
     @Override
