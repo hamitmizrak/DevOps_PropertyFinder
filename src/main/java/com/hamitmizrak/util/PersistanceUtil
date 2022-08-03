@@ -2,3 +2,4 @@ Linkler
 http://localhost:8081
 http://localhost:8081/swagger-ui/index.html
 http://localhost:8081/h2-console
+http://localhost:8080/actuator
