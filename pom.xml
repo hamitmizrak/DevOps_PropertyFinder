@@ -35,6 +35,20 @@
     <!--dependencies-->
     <dependencies>
 
+        <!--  Actuator: Prometheus için gerekli olacak-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+        </dependency>
+
+        <!--  Prometheus: Prometheus için gerekli olacak-->
+        <dependency>
+            <groupId>io.micrometer</groupId>
+            <artifactId>micrometer-registry-prometheus</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+
         <!--Spring Web Mvc-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

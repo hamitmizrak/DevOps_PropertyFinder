@@ -21,7 +21,7 @@ class DevOpsPropertyFinderApplicationTests implements ITestData {
     private static String data =" number: 44";
 
     @Autowired
-  //  IEmployeeRepository repository;
+  IEmployeeRepository repository;
 
     @BeforeAll
     static void getBeforeAllMethod(){
