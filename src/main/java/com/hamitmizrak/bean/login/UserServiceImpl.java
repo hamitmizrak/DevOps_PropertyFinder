@@ -6,7 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;;
@@ -23,13 +22,13 @@ public class UserServiceImpl implements  IUserService {
     @Autowired
     private PasswordEncoderBean  passwordEncoder;
 
-
     //parametreli constructor
     //@AutoWired
     public UserServiceImpl(IUserRepository repository) {
         this.repository = repository;
     }
 
+    //  register  ==> implements
     @Override
     public UserEntity save(UserRegisterDto registerDto) {
         List<RoleEntity> list=new ArrayList<>();
@@ -38,26 +37,23 @@ public class UserServiceImpl implements  IUserService {
                 .firstName(registerDto.getFirstName())
                 .lastName(registerDto.getLastName())
                 .email(registerDto.getEmail())
+                //şifreyi maskelemek
                .password(passwordEncoder.passwordEncoder().encode(registerDto.getPassword()))
                 .roles(list)
                 .build();
-      //  passwordEncoder.encode(registerDto.getPassword());
-        //şifreyi maskelemek
-       //  userEntity.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-
-         passwordEncoder.passwordEncoder().encode(registerDto.getPassword());
         return repository.save(userEntity);
     }
 
     //UserDetailsServisten geliyor
     //Kullancıınıdan alınan email ve password respositorde karşılaştırmak
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserEntity userEntity=repository.findByEmail(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UserEntity userEntity=repository.findByEmail(email);
         if(userEntity==null){
-            throw new UsernameNotFoundException("Invalid username or password");
+            throw new UsernameNotFoundException("Geçersiz kullanıcı adı veya şifre");
         }
         //roleAuthorities
+        //Şifre
         return new org.springframework.security.core.userdetails.User(userEntity.getEmail(), userEntity.getPassword(), roleAuthorities(userEntity.getRoles()));
     }
 
@@ -65,9 +61,4 @@ public class UserServiceImpl implements  IUserService {
     private Collection<? extends GrantedAuthority>roleAuthorities  (Collection < RoleEntity > roles) {
        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
    }
-
-//    private List << ? extends GrantedAuthority > mapRolesToAuthorities(Collection < RoleEntity > roles) {
-//        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getRoleName())).collect(Collectors.toList());
-//    }
-
 }

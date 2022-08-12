@@ -1,13 +1,10 @@
 package com.hamitmizrak.bean.login;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
-import java.util.Collection;
 
 //lombok
 @Data
